@@ -10,17 +10,18 @@ from datetime import datetime
 _remote = '{}@{}'.format(REMOTE_USER, REMOTE_ADDRESS)
 _remote_path = '{}/{}'.format(REMOTE_PATH, FRIDGE_NAME)
 
-print("Creating remote video path...")
-subprocess.run(['ssh', _remote, 'mkdir', '-p', _remote_path])
+def create_remote_path():
+    print("Creating remote video path...")
+    subprocess.run(['ssh', _remote, 'mkdir', '-p', _remote_path])
 
-_zip = None
-if not os.path.exists(VIDEO_PATH):
-    os.mkdir(VIDEO_PATH)
+    if not os.path.exists(VIDEO_PATH):
+        os.mkdir(VIDEO_PATH)
 
 def _get_video_name(number):
     return 'nano_video_test{}.avi'.format(number)
 
 def send_videos(file):
+    create_remote_path()
     print('Transferring images...')
     
     path = './{}'.format(file)
@@ -46,6 +47,7 @@ def zip_videos(name):
     return dest
     
 def capture_and_send():
+    print(datetime.now().strftime("%Y-%m-%d-%H:%M:%S"))
     capture_videos()
 
     _zip = zip_videos(VIDEO_PATH)
@@ -61,7 +63,7 @@ def capture_videos():
 
     processes = []
 
-    for i in [0, 2]:
+    for i in range(CAM_COUNT):
         command = ['ffmpeg',
                    '-y',
                    '-i', '/dev/video{}'.format(i),
@@ -85,5 +87,3 @@ def capture_videos():
 if __name__ == '__main__':
     capture_and_send()
 
-
-# ffmpeg -y -i /dev/video0 -video_size 648x486 -r 25 -t 10 -i /dev/video1 -video_size 648x486 -r 25 -t 10 -vf "drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text='%{localtime}'" -map 0 test_videos/nano_video_test0.avi -vf "drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text='%{localtime}'" -map 1 test_videos/nano_video_test1.avi
