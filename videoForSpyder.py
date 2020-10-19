@@ -69,11 +69,11 @@ def capture_videos():
                    '-r', str(FRAME_RATE),
                    #'--title', _get_image_name(i),
                    #'--rotate', '90',
-                   '-t', str(VIDEO_DURATION),
                    #'-timestamp', datetime.now().strftime("%Y-%m-%d"),
-                   '{}/{}'.format(VIDEO_PATH, _get_video_name(i)),
                    '-vf',
-                   " \"drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow@0.8:x=7:y=7:text=\'%{pts\:gmtime\:1507046400\:%d-%m-%Y %T}\'\""
+                   "drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text={}".format("'%{localtime}'"),
+                   '-t', str(VIDEO_DURATION),
+                   '{}/{}'.format(VIDEO_PATH, _get_video_name(i))
                    ]
         # oscommand = ' '.join(map(str,command))
         # os.system(oscommand)
@@ -86,3 +86,4 @@ if __name__ == '__main__':
     capture_and_send()
 
 
+# ffmpeg -y -i /dev/video0 -video_size 648x486 -r 25 -t 10 -i /dev/video1 -video_size 648x486 -r 25 -t 10 -vf "drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text='%{localtime}'" -map 0 test_videos/nano_video_test0.avi -vf "drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text='%{localtime}'" -map 1 test_videos/nano_video_test1.avi
