@@ -1,4 +1,4 @@
-CAM_COUNT = 3
+CAM_COUNT = 4
 IMAGE_PATH = 'PictureWithStepperMotor/test_images'
 VIDEO_PATH = 'test_videos'
 VIDEO_DURATION = 10 #In Seconds
