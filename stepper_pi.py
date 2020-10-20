@@ -7,28 +7,30 @@ import argparse
 DIR = 13
 PUL = 12
 
-rotations = 4000
-direction = "ccw"
+DOWNWARD_ROTATIONS = 4400
+DOWNWARD_SPEED = 1000
+UPWARD_ROTATIONS = 1000
+UPWARD_SPEED = 8000
+rotations = 1000 #4000
+direction = "cw"
 
 def loopSpyder():
+    time.sleep(1)
     global rotations, direction
-    print(direction, rotations)
-    moveSpyder()
+    moveSpyder(DOWNWARD_ROTATIONS, direction, DOWNWARD_SPEED)
     direction = "ccw" if direction == "cw" else "cw"
-    print(direction, rotations)
-    moveSpyder()
+    moveSpyder(UPWARD_ROTATIONS, direction, UPWARD_SPEED)
     direction = "ccw" if direction == "cw" else "cw"
 
 ##TODO Include start position
-def moveSpyder():
-    global rotations, direction
+def moveSpyder(rotations, direction, speed):
     #gpio.BCM for physical pin numbers
     gpio.setmode(gpio.BCM) 
     gpio.setwarnings(False)
     gpio.setup([PUL, DIR], gpio.OUT)
     gpio.output(DIR, gpio.HIGH)
 
-    pwmPUL = gpio.PWM(PUL, 1000) #800, 1000
+    pwmPUL = gpio.PWM(PUL, speed) #800, 1000
     pwmPUL.start(0)
 
     """
@@ -64,14 +66,16 @@ if __name__ == '__main__':
     parser.add_argument('--rotations', '-r', type=int, help='Number of rotations')
     parser.add_argument('--direction', '-d', type=str, help='Direction of the motor. cw for clockwise(downwards), '
                                                             'ccw for counter-clockwise(upwards)')
+    parser.add_argument('--speed', '-s', type=int, help='Speed(frequency) of the motor')
 
     args = parser.parse_args()
 
     rotations = args.rotations if args.rotations else 100
     direction = args.direction if args.direction else "ccw"
+    speed = args.speed if args.speed else 1000
 
     #runInParallel(capture_and_send, moveSpyder)
-    moveSpyder()
+    moveSpyder(rotations, direction, speed)
     # direction = "ccw" if direction == "cw" else "cw"
-    # moveSpyder()
+    # loopSpyder()
 
