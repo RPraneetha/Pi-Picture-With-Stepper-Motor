@@ -14,9 +14,6 @@ def create_remote_path():
     print("Creating remote video path...")
     subprocess.run(['ssh', _remote, 'mkdir', '-p', _remote_path])
 
-    if not os.path.exists(VIDEO_PATH):
-        os.mkdir(VIDEO_PATH)
-
 def _get_video_name(number):
     return 'nano_video_test{}.avi'.format(number)
 
@@ -58,6 +55,9 @@ def capture_and_send():
     print('Done.')
 
 def capture_videos():
+
+    if not os.path.exists(VIDEO_PATH):
+        os.mkdir(VIDEO_PATH)
 
     print('Capturing videos...')
 

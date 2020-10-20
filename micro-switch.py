@@ -1,19 +1,11 @@
 # curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
 import time
-import sys
 from multiprocessing import Process
-from grove.gpio import GPIO
+import RPi.GPIO as GPIO
 from videoForSpyder import capture_and_send
-from stepper_pi import moveSpyder
-# from stepper_motors import moveSpyder
+from stepper_pi import loopSpyder
 
-class GroveTiltSwitch(GPIO):
-    def __init__(self, pin):
-        super(GroveTiltSwitch, self).__init__(pin, GPIO.IN)
-
-    @property
-    def state(self):
-        return super(GroveTiltSwitch, self).read()
+PIN = 5
 
 def runInParallel(*fns):
   proc = []
@@ -25,18 +17,19 @@ def runInParallel(*fns):
     p.join()
 
 def main():
-    if len(sys.argv) < 2:
-        print('Usage: {} pin'.format(sys.argv[0]))
-        sys.exit(1)
-
-    micro_switch = GroveTiltSwitch(int(sys.argv[1]))
+    capture = False
 
     while True:
-        if micro_switch.state is 1:
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(PIN, GPIO.IN)
+        if GPIO.input(PIN) is 1 and capture is not True:
             print("on")
-            runInParallel(capture_and_send, moveSpyder)
-        else:
+            # runInParallel(capture_and_send, loopSpyder)
+            loopSpyder()
+            capture = True
+        elif GPIO.input(PIN) is 0:
             print("off")
+            capture = False
         time.sleep(1)
 
 
