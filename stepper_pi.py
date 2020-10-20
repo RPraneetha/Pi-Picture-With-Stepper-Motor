@@ -75,8 +75,7 @@ if __name__ == '__main__':
     speed = args.speed if args.speed else 1000
 
     #runInParallel(capture_and_send, moveSpyder)
-    # moveSpyder(rotations, direction, speed)
+    moveSpyder(rotations, direction, speed)
     # direction = "ccw" if direction == "cw" else "cw"
-    moveSpyder()
     # loopSpyder()
 
