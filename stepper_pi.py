@@ -8,15 +8,18 @@ import argparse
 DIR = 13
 PUL = 12
 
-parser = argparse.ArgumentParser(description='Pass arguments to control motor.')
-parser.add_argument('--rotations', '-r', type=int, help='Number of rotations')
-parser.add_argument('--direction', '-d', type=str, help='Direction of the motor. cw for clockwise(upwards), '
-                                                        'ccw for counter-clockwise(downwards)')
+# parser = argparse.ArgumentParser(description='Pass arguments to control motor.')
+# parser.add_argument('--rotations', '-r', type=int, help='Number of rotations')
+# parser.add_argument('--direction', '-d', type=str, help='Direction of the motor. cw for clockwise(upwards), '
+#                                                         'ccw for counter-clockwise(downwards)')
+#
+# args = parser.parse_args()
+#
+# rotations = args.rotations if args.rotations else 1440
+# direction = args.direction if args.direction else "cw"
 
-args = parser.parse_args()
-
-rotations = args.rotations if args.rotations else 1440
-direction = args.direction if args.direction else "cw"
+rotations = 1440
+direction = "cw"
 
 ##TODO Include start position
 def moveSpyder():

@@ -1,10 +1,10 @@
-CAM_COUNT = 4
+CAM_COUNT = 3
 IMAGE_PATH = 'PictureWithStepperMotor/test_images'
 VIDEO_PATH = 'test_videos'
 VIDEO_DURATION = 10 #In Seconds
 RESOLUTION = '648x486'
 FRIDGE_NAME = 'MARK-III'
-REMOTE_ADDRESS = '10.4.10.51'
+REMOTE_ADDRESS = '10.4.10.55'
 # '192.168.178.76'
 REMOTE_PATH = '/Users/rammy/fridge-images'
 REMOTE_USER = 'rammy'
