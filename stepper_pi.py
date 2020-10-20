@@ -1,6 +1,5 @@
 import RPi.GPIO as gpio
 import time
-from datetime import datetime
 from multiprocessing import Process
 from videoForSpyder import capture_and_send
 import argparse
@@ -8,18 +7,28 @@ import argparse
 DIR = 13
 PUL = 12
 
-rotations = 1440
-direction = "cw"
+rotations = 4000
+direction = "ccw"
+
+def loopSpyder():
+    global rotations, direction
+    print(direction, rotations)
+    moveSpyder()
+    direction = "ccw" if direction == "cw" else "cw"
+    print(direction, rotations)
+    moveSpyder()
+    direction = "ccw" if direction == "cw" else "cw"
 
 ##TODO Include start position
 def moveSpyder():
+    global rotations, direction
     #gpio.BCM for physical pin numbers
     gpio.setmode(gpio.BCM) 
     gpio.setwarnings(False)
     gpio.setup([PUL, DIR], gpio.OUT)
     gpio.output(DIR, gpio.HIGH)
 
-    pwmPUL = gpio.PWM(PUL, 300)
+    pwmPUL = gpio.PWM(PUL, 1000) #800, 1000
     pwmPUL.start(0)
 
     """
@@ -35,11 +44,7 @@ def moveSpyder():
     else:
         return
     pwmPUL.ChangeDutyCycle(50)
-    #time.sleep(2)
     time.sleep(rotations/360)
-
-    #processify(capture_and_send())
-#    subprocess.run(['python3', 'videoForSpyder.py'])
 
 ## Don't be dependent on time, sync video with motor
     pwmPUL.stop()
@@ -55,6 +60,18 @@ def runInParallel(*fns):
     p.join()
 
 if __name__ == '__main__':
-    runInParallel(capture_and_send, moveSpyder)
+    parser = argparse.ArgumentParser(description='Pass arguments to control motor.')
+    parser.add_argument('--rotations', '-r', type=int, help='Number of rotations')
+    parser.add_argument('--direction', '-d', type=str, help='Direction of the motor. cw for clockwise(downwards), '
+                                                            'ccw for counter-clockwise(upwards)')
 
-    # moveSpyder(rotations, direction)
+    args = parser.parse_args()
+
+    rotations = args.rotations if args.rotations else 100
+    direction = args.direction if args.direction else "ccw"
+
+    #runInParallel(capture_and_send, moveSpyder)
+    moveSpyder()
+    # direction = "ccw" if direction == "cw" else "cw"
+    # moveSpyder()
+
