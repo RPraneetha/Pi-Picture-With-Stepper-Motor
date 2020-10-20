@@ -29,14 +29,12 @@ def main():
         print('Usage: {} pin'.format(sys.argv[0]))
         sys.exit(1)
 
-    # swicth = GroveTiltSwitch(int(sys.argv[1]))
+    micro_switch = GroveTiltSwitch(int(sys.argv[1]))
 
     while True:
-        # if swicth.state is 1:
-        if True:
+        if micro_switch.state is 1:
             print("on")
-            # runInParallel(capture_and_send(), moveSpyder())
-            runInParallel(capture_and_send(), moveSpyder(1440, "cw"))
+            runInParallel(capture_and_send, moveSpyder)
         else:
             print("off")
         time.sleep(1)
