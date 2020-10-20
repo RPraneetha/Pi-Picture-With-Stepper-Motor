@@ -1,4 +1,3 @@
-# curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
 import time
 from multiprocessing import Process
 import RPi.GPIO as GPIO
@@ -24,8 +23,7 @@ def main():
         GPIO.setup(PIN, GPIO.IN)
         if GPIO.input(PIN) is 1 and capture is not True:
             print("on")
-            # runInParallel(capture_and_send, loopSpyder)
-            loopSpyder()
+            runInParallel(capture_and_send, loopSpyder)
             capture = True
         elif GPIO.input(PIN) is 0:
             print("off")

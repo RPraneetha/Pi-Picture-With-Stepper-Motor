@@ -1,8 +1,8 @@
 CAM_COUNT = 4
 IMAGE_PATH = 'PictureWithStepperMotor/test_images'
 VIDEO_PATH = 'test_videos'
-VIDEO_DURATION = 15 #In Seconds
-RESOLUTION = '648x486'
+VIDEO_DURATION = 10 #In Seconds
+RESOLUTION = '1280x720'
 FRIDGE_NAME = 'MARK-III'
 REMOTE_ADDRESS = '10.4.10.55'
 # '192.168.178.76'
