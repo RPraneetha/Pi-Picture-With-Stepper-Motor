@@ -7,11 +7,11 @@ import argparse
 DIR = 13
 PUL = 12
 
-DOWNWARD_ROTATIONS = 4400
-DOWNWARD_SPEED = 1000
-UPWARD_ROTATIONS = 1000
-UPWARD_SPEED = 8000
-rotations = 1000 #4000
+DOWNWARD_ROTATIONS = 900
+DOWNWARD_SPEED = 8000
+UPWARD_ROTATIONS = 4000
+UPWARD_SPEED = 1000
+rotations = 100 #4000
 direction = "cw"
 
 def loopSpyder():
@@ -19,6 +19,7 @@ def loopSpyder():
     global rotations, direction
     moveSpyder(DOWNWARD_ROTATIONS, direction, DOWNWARD_SPEED)
     direction = "ccw" if direction == "cw" else "cw"
+    time.sleep(0.1)
     moveSpyder(UPWARD_ROTATIONS, direction, UPWARD_SPEED)
     direction = "ccw" if direction == "cw" else "cw"
 
@@ -64,14 +65,13 @@ def runInParallel(*fns):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Pass arguments to control motor.')
     parser.add_argument('--rotations', '-r', type=int, help='Number of rotations')
-    parser.add_argument('--direction', '-d', type=str, help='Direction of the motor. cw for clockwise(downwards), '
-                                                            'ccw for counter-clockwise(upwards)')
+    parser.add_argument('--direction', '-d', type=str, help='Direction of the motor - down or up')
     parser.add_argument('--speed', '-s', type=int, help='Speed(frequency) of the motor')
 
     args = parser.parse_args()
 
     rotations = args.rotations if args.rotations else 100
-    direction = args.direction if args.direction else "ccw"
+    direction = "ccw" if args.direction == "up" else "cw"
     speed = args.speed if args.speed else 1000
 
     #runInParallel(capture_and_send, moveSpyder)

@@ -24,6 +24,7 @@ def main():
         if GPIO.input(PIN) is 1 and capture is not True:
             print("on")
             runInParallel(capture_and_send, loopSpyder)
+            # loopSpyder()
             capture = True
         elif GPIO.input(PIN) is 0:
             print("off")

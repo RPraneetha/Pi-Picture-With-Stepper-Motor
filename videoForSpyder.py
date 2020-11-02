@@ -10,22 +10,26 @@ from datetime import datetime
 _remote = '{}@{}'.format(REMOTE_USER, REMOTE_ADDRESS)
 _remote_path = '{}/{}'.format(REMOTE_PATH, FRIDGE_NAME)
 
+
 def create_remote_path():
     print("Creating remote video path...")
     subprocess.run(['ssh', _remote, 'mkdir', '-p', _remote_path])
 
+
 def _get_video_name(number):
     return 'nano_video_test{}.avi'.format(number)
 
+
 def send_videos(file):
     create_remote_path()
-    print('Transferring images...')
+    print('Transferring videos...')
     
     path = './{}'.format(file)
     remote = '{}:{}'.format(_remote, _remote_path)
     print(path, remote)
     subprocess.run(['scp', path, remote])
-    
+
+
 def zip_videos(name):
     dir_before = os.getcwd()
     path = '{}/{}'.format(dir_before, name)
@@ -42,7 +46,8 @@ def zip_videos(name):
         return None
     
     return dest
-    
+
+
 def capture_and_send():
     print(datetime.now().strftime("%Y-%m-%d-%H:%M:%S"))
     capture_videos()
@@ -53,6 +58,7 @@ def capture_and_send():
         send_videos(_zip)
 
     print('Done.')
+
 
 def capture_videos():
 
@@ -75,6 +81,7 @@ def capture_videos():
                    '-vf',
                    "drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text={}".format("'%{localtime}'"),
                    '-t', str(VIDEO_DURATION),
+                   '-hide_banner',
                    '{}/{}'.format(VIDEO_PATH, _get_video_name(i))
                    ]
         # oscommand = ' '.join(map(str,command))
@@ -83,6 +90,7 @@ def capture_videos():
         processes.append(subprocess.Popen(command))
 
     [process.wait() for process in processes]
+
 
 if __name__ == '__main__':
     capture_and_send()
